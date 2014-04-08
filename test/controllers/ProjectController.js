@@ -5,7 +5,8 @@ describe(TEST_NAME, function() {
   var validProject = {
      title: 'Test Project Title',
      description: 'Test Project Description and some long items here...', 
-     project_code: 'TPT' 
+     project_code: 'TPT',
+     client_id: 1
   }
 
   before(function(done){
@@ -42,6 +43,12 @@ describe(TEST_NAME, function() {
     it("should be successfull when accesing projects/view", function(done) {
       request
         .get("/project/view")
+        .expect(200, done);
+    });
+
+    it("should be successfull when accesing projects/create", function(done) {
+      request
+        .get("/project/create")
         .expect(200, done);
     });
 

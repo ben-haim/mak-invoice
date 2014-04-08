@@ -1,5 +1,5 @@
 /**
- * ProjectController
+ * SessionController
  *
  * @module      :: Controller
  * @description	:: A set of functions called `actions`.
@@ -17,37 +17,29 @@
 
 module.exports = {
     
+  
   /**
    * Overrides for the settings in `config/controllers.js`
-   * (specific to ProjectController)
+   * (specific to SessionController)
    */
   _config: {},
 
   index: function(req, res, next){
-  	res.locals.title = 'Projects'
-  	res.view();
+ 	res.redirect('/session/new');
+ 	return;
   },
 
-  view: function(req, res, next){
-
-    var project_list;
-  	// res.view();
-    Project.find().done(function(err, projects){
-      if(err){return next(err);}
-      project_list = projects;
-    });
-    res.json(project_list);
+  auth: function(req, res, next){
+  	return res.json({'test' : 'test'});
   },
 
-  create: function(req, res, next){
+  new: function(req, res, next){
+  	res.view('user/login.ejs');
+  },
 
-    Project.create(req.params.all()).done(function(err, new_project){
-      if(err){return next(err);}
+  logout: function(req, res, next){
+  	return res.json({'test' : 'test'});
+  },
 
-      //to do:: Insert UserProject.create(); here
-
-    });
-    res.view();
-  }
-
+  
 };

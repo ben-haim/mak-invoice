@@ -1,28 +1,37 @@
 /**
- * Project
+ * Client
  *
  * @module      :: Model
  * @description :: A short summary of how this model works and what it represents.
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
+
 module.exports = {
 
   attributes: {
- 
-    title: {
+  	
+  	/* e.g.
+  	nickname: 'string'
+  	*/
+    name: {
       type: 'string',
       required: true
     },
-    description: {
-      type: 'string',
-    },
-    project_code:{
+    company:{
       type: 'string',
       required: true
     },
-    client_id: {
-      type: 'integer',
+    designation:{
+      type: 'string',
       required: true
+    },
+    address:{
+      type: 'string',
+      required: true
+    },
+    user_id:{
+    	type: 'integer',
+    	required: true
     }
 
   }

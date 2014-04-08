@@ -1,5 +1,5 @@
 /**
- * ProjectController
+ * ProfileController
  *
  * @module      :: Controller
  * @description	:: A set of functions called `actions`.
@@ -17,37 +17,24 @@
 
 module.exports = {
     
+  
+
+
   /**
    * Overrides for the settings in `config/controllers.js`
-   * (specific to ProjectController)
+   * (specific to ProfileController)
    */
   _config: {},
 
-  index: function(req, res, next){
-  	res.locals.title = 'Projects'
-  	res.view();
+  index: function(req, res){
+  	return res.json({});
   },
 
-  view: function(req, res, next){
-
-    var project_list;
-  	// res.view();
-    Project.find().done(function(err, projects){
-      if(err){return next(err);}
-      project_list = projects;
-    });
-    res.json(project_list);
-  },
-
-  create: function(req, res, next){
-
-    Project.create(req.params.all()).done(function(err, new_project){
-      if(err){return next(err);}
-
-      //to do:: Insert UserProject.create(); here
-
-    });
-    res.view();
+  update: function(req, res){
+     res.view();
   }
 
+
+
+  
 };
