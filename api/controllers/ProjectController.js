@@ -24,8 +24,12 @@ module.exports = {
   _config: {},
 
   index: function(req, res, next){
-  	res.locals.title = 'Projects'
-  	res.view();
+    if(!hasActiveuserId){
+      res.redirect('/session/new');
+      return;
+    }
+    Project.find();
+  	
   },
 
   view: function(req, res, next){
@@ -41,13 +45,25 @@ module.exports = {
 
   create: function(req, res, next){
 
+    var project_details = {
+      title: req.param('title'),
+      description: req.param('description'),
+      project_code: req.param('project_code'),
+      client_id: req.param('client_id'),
+      user_id: req.param('user_id')      
+    }
+
     Project.create(req.params.all()).done(function(err, new_project){
       if(err){return next(err);}
-
       //to do:: Insert UserProject.create(); here
-
     });
     res.view();
   }
 
 };
+
+
+function hasActiveuserId(){
+  return (req.session.userSessionObject.id) ? true : false;  
+}
+

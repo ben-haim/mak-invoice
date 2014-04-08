@@ -46,15 +46,13 @@ describe(TEST_NAME, function() {
         .expect(200, done);
     });
 
-    it("should be successfull when accesing projects/create", function(done) {
-      request
-        .get("/project/create")
-        .expect(200, done);
-    });
+    // it("should be successfull when accesing projects/create", function(done) {
+    //   request
+    //     .get("/project/create")
+    //     .expect(200, done);
+    // });
 
   });
-
-
 
 
 });

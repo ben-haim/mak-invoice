@@ -8,7 +8,6 @@ describe(TEST_NAME, function() {
   	full_name: 'Full Name of User',
   }
 
-
   describe("TEST Create", function(done){
     it("Should Insert Valid User", function(){
       User.create(valid_user).done(function(err, done){
@@ -18,18 +17,17 @@ describe(TEST_NAME, function() {
     });
   });
 
-  describe("TEST destroy", function(done){
-  	it("Should Delete an Entry", function(){
-  	  User.findOneByUsername(valid_user.username).done(function(err, user){
-  	  	expect(err).not.to.exist;
-  	  	user.destroy(function(err){
-  	  	  expect(err).not.to.exist;
-  	  	  done;
-  	  	});
-  	  });	
-  	});
-
-  });
+  // describe("TEST destroy", function(done){
+  // 	it("Should Delete an Entry", function(){
+  // 	  User.findOneByUsername(valid_user.username).done(function(err, user){
+  // 	  	expect(err).not.to.exist;
+  // 	  	user.destroy(function(err){
+  // 	  	  expect(err).not.to.exist;
+  // 	  	  done;
+  // 	  	});
+  // 	  });	
+  // 	});
+  // });
 
   describe("Validations", function(done){
 

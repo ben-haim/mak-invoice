@@ -23,6 +23,10 @@ module.exports = {
     client_id: {
       type: 'integer',
       required: true
+    },
+    user_id: {
+      type: 'integer',
+      required: true
     }
 
   }

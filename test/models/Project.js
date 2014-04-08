@@ -6,7 +6,8 @@ describe(TEST_NAME, function() {
   	title: 'Resa Website',
   	description: 'Organization Website for RESA',
   	project_code: 'RESAWEB',
-  	client_id: 1
+  	client_id: 1,
+    user_id: 1
   }
 
   describe("TEST Create", function(done){
@@ -43,7 +44,7 @@ describe(TEST_NAME, function() {
         });
         done();
       });
-	});
+	  });
 	   
     describe("Project Code Field Checking", function(done){
       it("should return error if project_code field is not valid", function(done){
@@ -55,19 +56,31 @@ describe(TEST_NAME, function() {
         });
         done();
       });
-	});	   
+  	});	   
 
     describe("Client ID Field Checking", function(done){
       it("should return error if client_id field is not valid", function(done){
-      	var no_title = _.clone(valid_project);
-      	delete no_title.client_id;
+        var no_title = _.clone(valid_project);
+        delete no_title.client_id;
         Project.create(_.clone(no_title), function(err, done){
           expect(err).to.exist;
           done;
         });
         done();
       });
-	});
+    });
+
+    describe("User ID Field Checking", function(done){
+      it("should return error if user_id field is not valid", function(done){
+      	var no_userid = _.clone(valid_project);
+      	delete no_userid.user_id;
+        Project.create(no_userid, function(err, done){
+          expect(err).to.exist;
+          done;
+        });
+        done();
+      });
+  	});
 
   });
 
