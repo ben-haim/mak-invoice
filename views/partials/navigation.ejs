@@ -11,12 +11,18 @@
           <a class="navbar-brand" href="/">Sample Sails App</a>
         </div>
         <div class="navbar-collapse collapse">
+
+        <% if(req.session.authenticated){ %>          
           <ul class="nav navbar-nav">
-            <li><a href="/project">Projects</a></li>
-            <% if(req.session.authenticated){ %>
-              <li><a href="/session/logout">Log Out</a></li>
-            <% } %>
+            <li><a href="/project"><i class="glyphicon glyphicon-book"></i> Projects</a></li>
+            <li><a href="/client"><i class="glyphicon glyphicon-user"></i> Clients</a></li>
           </ul> 
+
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/session/logout"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
+            </ul>
+        <% } %>
+        
         </div><!--/.nav-collapse -->
       </div>
     </div>

@@ -30,7 +30,9 @@ describe(TEST_NAME, function() {
     it("should be successfull when accesing session/logout", function(done) {
       request
         .get("/session/logout")
-        .expect(200, done);
+        .expect(200)
+        .expect('Location', '/session/new')
+        .expect(302, done);
     });    
 
   });

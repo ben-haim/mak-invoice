@@ -16,11 +16,16 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access) 
-  '*': 'flash'
+  '*': 'flash',
 
-  ,ProjectController: {
+  ProjectController: {
+  	'*': ['flash', 'session']
+  },
+
+  ClientController: {
   	'*': ['flash', 'session']
   }
+
   /*
 	// Here's an example of adding some policies to a controller
 	RabbitController: {

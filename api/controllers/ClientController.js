@@ -26,17 +26,132 @@ module.exports = {
    */
   _config: {},
 
+  index: function(req, res, next){
+
+    Client.find()
+    .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+    .sort('name')
+    .exec(function(err, clients) {
+      if(err){ return next(err);}
+
+      if(!clients){
+        res.redirect('/session/new');
+        return;
+      }else{
+        res.view({client_list: clients});
+      }
+    });
+
+  },
+
+  create: function(req, res, next){
+    var client_details = {
+      name: req.param('name'),
+      company: req.param('company'),
+      designation: req.param('designation'),
+      address: req.param('address'),
+      user_id: req.session.userSessionObject.id   
+    }
+
+    Client.create(client_details).done(function(err, new_client){
+      if(err){return next(err);}
+      
+      if(!new_client){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/client');
+          return;
+       
+      }else{
+        req.session.flash = {
+          success: {message: 'New Client Added'}
+        }
+        res.redirect('/client/');
+        return;
+      }
+    });    
+  },
+
   new: function(req, res, next){
   	res.view();
   },
 
   edit: function(req, res, next){
-  	res.view();
+   if(!req.param('id')){
+      res.redirect('/client');
+      return;
+    }
+
+    Client.findOneById(req.param('id')).done(function(err, client){
+      if(err){return next(err);}
+
+      if(!client){
+        res.redirect('/client');
+        return;
+      }else{
+        res.view({client_details: client});
+      }
+
+    });        
+    res.view();
   },
 
   view: function(req, res, next){
   	res.view();
-  }
+  },
+
+  update: function(req, res, next){
+    var client_details = {
+      name: req.param('name'),
+      company: req.param('company'),
+      designation: req.param('designation'),
+      address: req.param('address'),
+    }
+
+    Client.update({id: req.param('id')}, client_details, function(err, client_details){
+      if(err){return next(err);}
+
+      if(!client_details){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/client');
+          return;
+      }else{
+        req.session.flash = {
+          success: {message: 'Client details updated!'}
+        }
+        res.redirect('/client');
+        return;
+      }
+    });
+  },
+
+  deactivate: function(req, res, next){
+    if(!req.param('id')){
+      res.redirect('/client');
+      return;
+    }   
+
+    Client.update({id: req.param('id')}, {is_active: 0}, function(err, updated_client){
+      if(err){return next(err);}
+
+      if(!updated_client){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/client');
+          return;
+      }else{
+        req.session.flash = {
+          success: {message: 'Client deactivate!'}
+        }
+        res.redirect('/client');
+        return;
+      }
+    });    
+  }  
 
   
 };

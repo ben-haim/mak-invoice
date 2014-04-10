@@ -24,23 +24,138 @@ module.exports = {
   _config: {},
 
   index: function(req, res, next){
-    if(!hasActiveuserId){
-      res.redirect('/session/new');
-      return;
-    }
-    Project.find();
-  	
+    Project.find()
+    .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+    .sort('title')
+    .exec(function(err, projects) {
+      if(err){ return next(err);}
+
+      if(!projects){
+        res.redirect('/session/new');
+        return;
+      }else{
+        // project_count = (_.size(projects.Data) == 0) ? 
+        res.view({project_list: projects});
+      }
+    });
   },
 
   view: function(req, res, next){
 
-    var project_list;
-  	// res.view();
-    Project.find().done(function(err, projects){
+    if(!req.param('id')){
+      res.redirect('/project');
+      return;
+    }
+
+    Project.findOneById(req.param('id')).done(function(err, project){
       if(err){return next(err);}
-      project_list = projects;
+
+      if(!project){
+        res.redirect('/project');
+        return;
+      }else{
+        res.view({project_detail: project});
+      }
+
     });
-    res.json(project_list);
+    res.view();
+  },
+
+  new: function(req, res, next){
+
+    Client.find()
+    .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+    .sort('name')
+    .exec(function(err, clients) {
+      if(err){ return next(err);}
+
+      if(!clients){
+        res.redirect('/session/new');
+        return;
+      }else{
+
+        var client_list = []
+        for(prop in clients){
+          client_list[clients[prop].id] = clients[prop].name;
+        }
+
+        client_dropdown = AppHelper.htmlOptions(client_list, null);
+        res.view({client_select: client_dropdown});
+      }
+    });
+
+    res.view();
+  },
+
+  edit: function(req, res, next){
+
+    if(!req.param('id')){
+      res.redirect('/project');
+      return;
+    }
+
+    Project.findOneById(req.param('id')).done(function(err, project){
+      if(err){return next(err);}
+
+      if(!project){
+        res.redirect('/project');
+        return;
+      }else{
+         
+        Client.find()
+        .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+        .sort('name')
+        .exec(function(err, clients) {
+          if(err){ return next(err);}
+
+          if(!clients){
+            res.redirect('/session/new');
+            return;
+          }else{
+
+            var client_list = []
+            for(prop in clients){
+              client_list[clients[prop].id] = clients[prop].name;
+            }
+
+            client_dropdown = AppHelper.htmlOptions(client_list, null);
+          }
+        });     
+        
+        res.view({project_detail: project, client_select: client_selection});
+      }
+
+    });        
+    res.view();
+  },
+
+  update: function(req, res, next){
+
+    var project_details = {
+      title: req.param('title'),
+      description: req.param('description'),
+      project_code: req.param('project_code'),
+      client_id: req.param('client_id'),
+    }
+
+    Project.update({id: req.param('id')}, project_details, function(err, updated_project){
+      if(err){return next(err);}
+
+      if(!updated_project){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/project');
+          return;
+      }else{
+        req.session.flash = {
+          success: {message: 'Project details updated!'}
+        }
+        res.redirect('/project/view/' + req.param('id'));
+        return;
+      }
+    });
+
   },
 
   create: function(req, res, next){
@@ -50,20 +165,53 @@ module.exports = {
       description: req.param('description'),
       project_code: req.param('project_code'),
       client_id: req.param('client_id'),
-      user_id: req.param('user_id')      
+      user_id: req.session.userSessionObject.id   
     }
 
-    Project.create(req.params.all()).done(function(err, new_project){
+    Project.create(project_details).done(function(err, new_project){
       if(err){return next(err);}
-      //to do:: Insert UserProject.create(); here
+      
+      if(!new_project){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/project');
+          return;               
+       
+      }else{
+        req.session.flash = {
+          success: {message: 'New Project Added'}
+        }
+        res.redirect('/project/view/' + new_project.id);
+        return;
+      
+      }
     });
-    res.view();
+  },
+
+  deactivate: function(req, res, next){
+    if(!req.param('id')){
+      res.redirect('/project');
+      return;
+    }   
+
+    Project.update({id: req.param('id')}, {is_active: 0}, function(err, updated_project){
+      if(err){return next(err);}
+
+      if(!updated_project){
+          req.session.flash = {
+            error: {message: 'An Error Occured!, please try again!'}
+          }        
+          res.redirect('/project');
+          return;
+      }else{
+        req.session.flash = {
+          success: {message: 'Project deactivate!'}
+        }
+        res.redirect('/project');
+        return;
+      }
+    });    
   }
 
 };
-
-
-function hasActiveuserId(){
-  return (req.session.userSessionObject.id) ? true : false;  
-}
-

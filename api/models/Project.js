@@ -27,6 +27,10 @@ module.exports = {
     user_id: {
       type: 'integer',
       required: true
+    },
+    is_active:{
+      type: 'boolean',
+      defaultsTo: 1
     }
 
   }
