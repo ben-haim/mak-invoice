@@ -1,5 +1,75 @@
 <div class="row">
-	<div class="col-lg-4">column 1</div>
-	<div class="col-lg-4">column 1</div>
-	<div class="col-lg-4">column 1</div>
+
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><i class="glyphicon glyphicon-book"></i> Project Details</div>
+		  <div class="panel-body">
+			<strong>Project Code:</strong>
+		    <%-project_detail.project_code%>
+		    <br>
+			<strong>Title:</strong>
+			<%-project_detail.title%>
+			<br>
+          	<strong>Description:</strong><br>
+          	<%-project_detail.description%>
+		  </div>
+		</div>
+		<br>
+	</div>
+
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><i class="glyphicon glyphicon-user"></i> Client Details</div>
+		  <div class="panel-body">
+			<strong>Client Name:</strong>
+		    <%-client_detail.name%>
+		    <br>
+			<strong>Company:</strong>
+			<%-client_detail.company%>
+			<br>
+          	<strong>Designation:</strong>
+          	<%-client_detail.designation%>
+			<br>
+          	<strong>Address:</strong>
+          	<%-client_detail.address%>
+		  </div>
+		</div>	
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><i class="glyphicon glyphicon-list"></i> Job Order List</div>
+		  <div class="panel-body">
+		  	<a href="/<%-project_detail.project_code%>/<%-project_detail.id%>/job-orders/new" class="btn btn-danger"><i class="glyphicon glyphicon-plus"></i> New Job Order</a>
+		  	<br>
+			<table class="table table-hover">
+		      <thead>
+		        <tr>
+		          <th>Job Order #</th>
+		          <th>Job Request</th>
+		          <th>Date Requested</th>
+		          <th>Status</th>
+		          <th class="text-center">Action</th>
+		        </tr>
+		      </thead>
+
+		      <tbody>
+
+		      	<% for(key in joborder_list){ %>
+		      		<tr>
+		      			<td><%- joborder_list[key].ticket_number %></td>
+		      			<td><%- joborder_list[key].title %></td>
+		      			<td><%- AppHelper.convertDateToReadable(joborder_list[key].date_requested) %></td>
+		      			<td><%- AppHelper.getJobOrderStatusByCode(joborder_list[key].status) %></td>
+		      		</tr>
+		      	<% } %>
+
+		      </tbody>
+			</table>
+		  </div>
+		</div>			
+	</div>
 </div>

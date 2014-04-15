@@ -18,9 +18,9 @@ module.exports.policies = {
   // (`true` allows public access) 
   '*': 'flash',
 
-  ProjectController: {
-  	'*': ['flash', 'session']
-  },
+  // ProjectController: {
+  // 	'*': ['flash', 'session']
+  // },
 
   ClientController: {
   	'*': ['flash', 'session']

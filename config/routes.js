@@ -34,8 +34,23 @@ module.exports.routes = {
   // (This would also work if you had a file at: `/views/home.ejs`)
 
   '/': {
-    controller: 'SessionController',
-    action: 'new'
+    controller: "SessionController",
+    action: "new"
+  },
+
+  '/:project_code/:project_id/job-orders' : {
+    controller : "JoborderController",
+    action : "index"
+  },
+
+  '/:project_code/:project_id/job-orders/new' : {
+    controller : "JoborderController",
+    action : "new"
+  },
+
+  '/:project_code/:project_id/job-orders/create' : {
+    controller : "JoborderController",
+    action : "create"
   }
 
   /*
@@ -64,7 +79,7 @@ module.exports.routes = {
   // since the `index` action is the default, you can shortcut even further to:
   '/': 'MessageController'
 
-
+ 
   // Up until now, we haven't specified a specific HTTP method/verb
   // The routes above will apply to ALL verbs!
   // If you want to set up a route only for one in particular

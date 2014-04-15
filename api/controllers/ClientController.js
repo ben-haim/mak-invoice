@@ -17,8 +17,6 @@
 
 module.exports = {
     
-  
-
 
   /**
    * Overrides for the settings in `config/controllers.js`
@@ -30,7 +28,7 @@ module.exports = {
 
     Client.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
-    .sort('name')
+    .sort('id')
     .exec(function(err, clients) {
       if(err){ return next(err);}
 

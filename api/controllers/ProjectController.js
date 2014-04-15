@@ -22,7 +22,7 @@ module.exports = {
    * (specific to ProjectController)
    */
   _config: {},
-
+//======================= INDEX =========================== //
   index: function(req, res, next){
     Project.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
@@ -39,14 +39,21 @@ module.exports = {
       }
     });
   },
+//======================= INDEX =========================== //  
 
+//======================= VIEW ============================ //
   view: function(req, res, next){
+
+    var project_detail = {};
+    var client_detail = {};
+    var joborder_list = {};
 
     if(!req.param('id')){
       res.redirect('/project');
       return;
     }
 
+    //Get Project Details
     Project.findOneById(req.param('id')).done(function(err, project){
       if(err){return next(err);}
 
@@ -54,20 +61,53 @@ module.exports = {
         res.redirect('/project');
         return;
       }else{
-        res.view({project_detail: project});
+        project_detail = project;
+        
       }
+    });
+
+    //Get Client Details
+    Client.findOneById(project_detail.client_id).done(function(err, client){
+      if(err){return next(err);}
+
+      if(!client){
+        res.redirect('/project');
+        return;
+      }else{
+        client_detail = client;
+      }
+    });
+
+    //Get tickets / Job Orders
+    Joborder.findByProject_id(req.param('id')).done(function (err, job_orders){ 
+      if(err){
+        next(err);
+        return;
+      } 
+
+      joborder_list = job_orders;
 
     });
-    res.view();
-  },
 
+
+    res.view({project_detail: project_detail, 
+              client_detail: client_detail,
+              joborder_list: joborder_list,
+    });
+  },
+//======================= VIEW =========================== //
+
+//======================= NEW =========================== //
   new: function(req, res, next){
 
     Client.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
     .sort('name')
     .exec(function(err, clients) {
-      if(err){ return next(err);}
+
+      if(err){ 
+        return next(err);
+      }
 
       if(!clients){
         res.redirect('/session/new');
@@ -86,7 +126,9 @@ module.exports = {
 
     res.view();
   },
+//======================= NEW =========================== //
 
+//======================= EDIT =========================== //
   edit: function(req, res, next){
 
     if(!req.param('id')){
@@ -128,7 +170,9 @@ module.exports = {
     });        
     res.view();
   },
+//======================= EDIT =========================== //
 
+//======================= UPDATE =========================== //
   update: function(req, res, next){
 
     var project_details = {
@@ -157,7 +201,9 @@ module.exports = {
     });
 
   },
+//======================= UPDATE =========================== //
 
+//======================= CREATE =========================== //
   create: function(req, res, next){
 
     var project_details = {
@@ -189,6 +235,9 @@ module.exports = {
     });
   },
 
+//======================= CREATE =========================== //
+
+//======================= DEACTIVATE =========================== //
   deactivate: function(req, res, next){
     if(!req.param('id')){
       res.redirect('/project');
@@ -213,5 +262,6 @@ module.exports = {
       }
     });    
   }
+//======================= DEACTIVATE =========================== //
 
 };

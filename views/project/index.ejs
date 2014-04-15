@@ -8,7 +8,7 @@
 
 	<% for (var prop in project_list) { %>
 		<div class="col-lg-4">
-			<div class="well">
+			<div class="well thumbnail">
 				<div class="close" aria-hidden="true"><a href="javascript:void(0);" onClick="setProjectAsInactive(<%= project_list[prop].id %>)">&times;</a></div>
 				<h4><%= project_list[prop].title %><br>
 					<small><%= project_list[prop].description %></small>
@@ -23,7 +23,6 @@
     <% } %>
 
 </div><!-- .row -->
-
 
 <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal-dialog">
