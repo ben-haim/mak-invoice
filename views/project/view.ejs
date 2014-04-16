@@ -1,6 +1,6 @@
 <div class="row">
 
-	<div class="col-lg-6">
+	<div class="col-lg-4">
 		<div class="panel panel-default">
 		  <div class="panel-heading"><i class="glyphicon glyphicon-book"></i> Project Details</div>
 		  <div class="panel-body">
@@ -17,7 +17,7 @@
 		<br>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-4">
 		<div class="panel panel-default">
 		  <div class="panel-heading"><i class="glyphicon glyphicon-user"></i> Client Details</div>
 		  <div class="panel-body">
@@ -38,6 +38,7 @@
 
 </div>
 
+
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
@@ -45,31 +46,45 @@
 		  <div class="panel-body">
 		  	<a href="/<%-project_detail.project_code%>/<%-project_detail.id%>/job-orders/new" class="btn btn-danger"><i class="glyphicon glyphicon-plus"></i> New Job Order</a>
 		  	<br>
-			<table class="table table-hover">
-		      <thead>
-		        <tr>
-		          <th>Job Order #</th>
-		          <th>Job Request</th>
-		          <th>Date Requested</th>
-		          <th>Status</th>
-		          <th class="text-center">Action</th>
-		        </tr>
-		      </thead>
+		  	<div class="table-responsive">
+				<table class="table table-hover">
+			      <thead>
+			        <tr>
+			          <th>Job Order #</th>
+			          <th>Job Request</th>
+			          <th>Requested By</th>
+			          <th>Date Requested</th>
+			          <th>Status</th>
+			          <th class="text-center">Action</th>
+			        </tr>
+			      </thead>
 
-		      <tbody>
+			      <tbody>
 
-		      	<% for(key in joborder_list){ %>
-		      		<tr>
-		      			<td><%- joborder_list[key].ticket_number %></td>
-		      			<td><%- joborder_list[key].title %></td>
-		      			<td><%- AppHelper.convertDateToReadable(joborder_list[key].date_requested) %></td>
-		      			<td><%- AppHelper.getJobOrderStatusByCode(joborder_list[key].status) %></td>
-		      		</tr>
-		      	<% } %>
+			      	<% for(key in joborder_list){ %>
+			      		<tr>
+			      			<td><%- joborder_list[key].ticket_number %></td>
+			      			<td><%- joborder_list[key].title %></td>
+			      			<td><%- joborder_list[key].requested_by %></td>
+			      			<td><%- AppHelper.convertDateToReadable('%B %d, %Y',joborder_list[key].date_requested) %></td>
+			      			<td><%- AppHelper.getJobOrderStatusByCode(joborder_list[key].status) %></td>
+			      			<td>
+								<a href="#" class="popover-mark-close" data-container="body">
+									<i class="glyphicon glyphicon-ok-circle"></i>
+								</a>
+			      			</td>
+			      		</tr>
+			      	<% } %>
 
-		      </tbody>
-			</table>
+			      </tbody>
+				</table>
+			</div>
 		  </div>
 		</div>			
 	</div>
 </div>
+
+<br>
+
+<% // ------- INCLUDE NAVIGATION TEMPLATE ------- // %>
+<%- partial('../partials/mark_as_close.ejs')%>

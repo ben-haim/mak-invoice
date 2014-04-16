@@ -24,6 +24,7 @@ module.exports = {
   _config: {},
 //======================= INDEX =========================== //
   index: function(req, res, next){
+
     Project.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
     .sort('title')
@@ -126,10 +127,12 @@ module.exports = {
 
     res.view();
   },
-//======================= NEW =========================== //
+//======================= NEW ============================ //
 
 //======================= EDIT =========================== //
   edit: function(req, res, next){
+
+    // var client_selection = {};
 
     if(!req.param('id')){
       res.redirect('/project');
@@ -160,11 +163,11 @@ module.exports = {
               client_list[clients[prop].id] = clients[prop].name;
             }
 
-            client_dropdown = AppHelper.htmlOptions(client_list, null);
+            client_dropdown = AppHelper.htmlOptions(client_list, project.client_id);
           }
         });     
         
-        res.view({project_detail: project, client_select: client_selection});
+        res.view({project_detail: project, client_select: client_dropdown});
       }
 
     });        

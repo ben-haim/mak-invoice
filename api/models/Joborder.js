@@ -8,7 +8,6 @@
 
 module.exports = {
 
-
   attributes : {
   	ticket_number : {
   	  type : "string"

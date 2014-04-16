@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#dp1').datepicker({
+	$('.datepicker').datepicker({
 		format: 'mm-dd-yyyy'
 	});
 

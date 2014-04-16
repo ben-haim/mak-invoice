@@ -25,18 +25,15 @@ module.exports = {
 
   },
 
-  convertDateToReadable : function (timestamp){
-
-    console.log(timestamp);
-
-    var date_obj = new Date(timestamp);
-
-    return date_obj.toUTCString();
-
-    // return date_obj.getUTCMonth() + '/' + date_obj.getDay() + '/' + date_obj.getFullYear();
-
+  getCurrentDate : function (format){
+    return require('strftime')(format,new Date());
   },
 
+  convertDateToReadable : function (format, timestamp){
+
+    return require('strftime')(format,new Date(parseInt((timestamp * 1000)) - 86400));
+
+  },
 
   // convertTo
   convertToUnixTime : function(date){
