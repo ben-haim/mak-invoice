@@ -1,5 +1,5 @@
 <div id="popover-mark-form" style="display:none;">
-<form role="form" method="post" action="/test">
+<form role="form" method="post" action="/job-orders/close">
   <div class="form-group">
     <label for="remarks">Remarks</label>
     <textarea name="remarks" class="form-control col-lg-12" rows="6"></textarea>
@@ -7,13 +7,21 @@
 
   <div class="form-group">
     <label for="date_completed">Date Completed:</label>
-  <input type="text" class="form-control datepicker" onClick="test();" value="<%= AppHelper.getCurrentDate('%m/%d/%Y') %>" name="date_completed" id="date_completed">
+  <input type="text" class="form-control datepicker" onClick="initDatePicker(this);" value="<%= AppHelper.getCurrentDate('%m-%d-%Y') %>" name="date_completed" >
   </div>
 
   <div class="clearfix"></div>
   <br>
+  <input type="hidden" name="status" value="2" id="status">
+  <input type="hidden" name="project_id" value="<%- project_id %>" id="project_id">
+  <input type="hidden" name="id" value="" id="joborder_id">
   <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok-circle"></i> Submit</button>
+
 </form>
 </div>
 
+<style>
+.datepicker{z-index: 999;}
+.popover{z-index:888;}
+</style>
 <script src="/linker/pages/mark_as_close.js"></script>

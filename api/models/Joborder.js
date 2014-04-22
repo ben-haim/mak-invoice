@@ -23,7 +23,7 @@ module.exports = {
       type : "integer"
     },
   	date_completed : {
-  	  type : "string"
+  	  type : "integer"
   	},
   	remarks : {
   	  type : "string"	

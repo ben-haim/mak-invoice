@@ -38,7 +38,6 @@
 
 </div>
 
-
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
@@ -62,18 +61,7 @@
 			      <tbody>
 
 			      	<% for(key in joborder_list){ %>
-			      		<tr>
-			      			<td><%- joborder_list[key].ticket_number %></td>
-			      			<td><%- joborder_list[key].title %></td>
-			      			<td><%- joborder_list[key].requested_by %></td>
-			      			<td><%- AppHelper.convertDateToReadable('%B %d, %Y',joborder_list[key].date_requested) %></td>
-			      			<td><%- AppHelper.getJobOrderStatusByCode(joborder_list[key].status) %></td>
-			      			<td>
-								<a href="#" class="popover-mark-close" data-container="body">
-									<i class="glyphicon glyphicon-ok-circle"></i>
-								</a>
-			      			</td>
-			      		</tr>
+						<%- partial('../partials/joborder_list.ejs', {joborder: joborder_list[key]})%>			      	
 			      	<% } %>
 
 			      </tbody>
@@ -86,5 +74,5 @@
 
 <br>
 
-<% // ------- INCLUDE NAVIGATION TEMPLATE ------- // %>
-<%- partial('../partials/mark_as_close.ejs')%>
+<% // ------- INCLUDE Mark as Close Partial TEMPLATE ------- // %>
+<%- partial('../partials/popovers/mark_as_close.ejs', { project_id:  project_detail.id})%>

@@ -95,6 +95,40 @@ module.exports = {
       }
 
   	});
+  },
+
+  close: function (req, res, next){
+
+    console.log(req.params.all());
+
+    var job_update = {
+      remarks: req.param("remarks"),
+      date_completed: AppHelper.convertToUnixTime( req.param("date_completed") ),
+      status:  req.param("status")
+    }
+
+    Joborder.update({id: req.param("id")}, job_update, function(err, job_updated){
+      if(err){
+        next(err);
+        return;
+      }
+
+      if(!job_updated){
+        req.session.flash = {
+          error: {message: 'An Error Occured!, please try again!'}
+        }        
+        res.redirect('/project/view/' + req.param("project_id"));
+        return;        
+      }else{
+        req.session.flash = {
+          success: {message: 'JobOrder Marked as closed!'}
+        }
+        res.redirect('/project/view/' + req.param('project_id'));
+        return;      
+      }
+    });
+
+
   }
 
 

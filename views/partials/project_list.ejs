@@ -1,0 +1,33 @@
+<div class="col-lg-4">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+	  <i class="glyphicon glyphicon-book"></i>&nbsp;  <%= project.project_code %>
+	    <div class="close" aria-hidden="true">
+	 	  <a href="javascript:void(0);" onClick="setProjectAsInactive(<%= project.id %>)">&times;</a>
+	 	</div>
+ 	</div><!-- .panel-heading -->
+
+    <div class="panel-body">
+	
+	  <h4><%= project.title %><br>
+	    <small><%= project.description %></small>
+      </h4>
+	  <br>
+
+	  <ul class="list-group">
+	    <li class="list-group-item"><span class="badge">14</span>Job Orders:</li>
+		<li class="list-group-item"><span class="badge">14</span>Generated Invoices:</li>
+	  </ul>				
+
+	  <hr>
+	  <p>
+	    <a href="/project/view/<%= project.id %>" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> View</a>
+        <a href="/project/edit/<%= project.id %>" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+	  </p>
+
+  	</div><!-- .panel-body -->
+
+  </div><!-- .panel panel-default -->					
+
+</div><!-- .col-lg-4 -->

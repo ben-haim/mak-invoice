@@ -1,23 +1,26 @@
-	$('.popover-mark-close').popover({
-		trigger: 'click',
-		content: $('#popover-mark-form').html(),
-		title: 'Mark Job Order as Closed <button type="button" class="close close-popover" onClick="closeMe(this);" aria-hidden="true">&times;</button>',
-		container: 'body',
-		html: true,
-		placement: 'left'
-	});
 
-	$('.close-popover').click(function(){
-		alert('test');
-		// $('.popover').popover('hide');
-	});
+	//hide other opened pop-ups then open the latest one
+	$('.popover-mark-close').click(function(){
+    	$('.popover-mark-close').not(this).popover('hide'); //all but this
+	});	
 
-	function closeMe(element){
-		// $(this).parent().popover('hide');
-		// console.log( $(this).parent().find('popover') );
+	function initDatePicker(element){
+		$(element).datepicker({
+		format: 'mm-dd-yyyy'
+		});
+	}
 
-		$(this).parent().find('popover').popover('hide');
+	function initPopOver(job_id){
 
-		alert('test');
-		
+		$('#joborder_id').val(job_id);
+
+		$('.popover-mark-close').popover({
+			trigger: 'click',
+			content: $('#popover-mark-form').html(),
+			title: 'Mark Job Order as Closed',
+			container: 'body',
+			html: true,
+			placement: 'left'
+		});
+
 	}

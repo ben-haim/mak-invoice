@@ -3,66 +3,21 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;<a href="/project/new" class="btn btn-danger"><i class="glyphicon glyphicon-plus"></i> New Project</a>
 	</div>
 </div>
+
 <br>
+
 <div class="row">
 
 	<% for (var prop in project_list) { %>
 
-		<div class="col-lg-4">
-
-			<div class="panel panel-default">
-			  	<div class="panel-heading">
-				  	<i class="glyphicon glyphicon-book"></i>&nbsp;  <%= project_list[prop].project_code %>
-				 	<div class="close" aria-hidden="true">
-				 		<a href="javascript:void(0);" onClick="setProjectAsInactive(<%= project_list[prop].id %>)">&times;</a>
-				 	</div>
-			 	</div><!-- .panel-heading -->
-
-			  	<div class="panel-body">
-				
-					<h4><%= project_list[prop].title %><br>
-						<small><%= project_list[prop].description %></small>
-					</h4>
-					<br><br>
-					<p>
-						<a href="/project/view/<%= project_list[prop].id %>" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> View</a>
-						<a href="/project/edit/<%= project_list[prop].id %>" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-					</p>
-
-			  	</div><!-- .panel-body -->
-
-			</div><!-- .panel panel-default -->					
-			
-		</div>
+		<%- partial('../partials/project_list.ejs', {project: project_list[prop]})%>
 
     <% } %>
 
 </div><!-- .row -->
 
-<div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modal-title">Deactivate Project</h4>
-      </div>
-      <div class="modal-body">
-      	<blockquote>
-		  <p><i class="glyphicon glyphicon-question-sign"></i> Are you sure you want to deactivate this project?</p>
-		</blockquote>
-        
-      </div>
-      <div class="modal-footer">
-        
-        <form id="deactivate-modal-form" method="post" action="/project/deactivate/">
-        	<input type="hidden" name="id" id="deactivate-id">
-        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        	<button type="submit" class="btn btn-primary">Yes</button>
-    	</form>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- //load modal for deactivate project  -->
+<%- partial('../partials/modals/deactivate_project.ejs')%>
 
 <script>
 
