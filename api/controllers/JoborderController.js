@@ -51,13 +51,13 @@ module.exports = {
   create: function (req, res, next) {
 
   	var joborder_to_insert = {
-	  title : req.param('title'),  		  
-	  requested_by : req.param('requested_by'),  		  
-	  date_requested : AppHelper.convertToUnixTime(req.param('date_requested')),
-	  remarks : req.param('remarks'),  		  
-	  amount : req.param('amount'),  		  
-	  status : req.param('status'),  		  
-	  project_id : req.param('project_id')  		  
+	    title : req.param('title'),  		  
+	    requested_by : req.param('requested_by'),  		  
+	    date_requested : AppHelper.convertToUnixTime(req.param('date_requested')),
+	    remarks : req.param('remarks'),  		  
+	    amount : req.param('amount'),  		  
+	    status : req.param('status'),  		  
+	    project_id : req.param('project_id')  		  
   	};
 
   	Joborder.create (joborder_to_insert).done( function( err, new_joborder ){

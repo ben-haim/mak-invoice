@@ -1,8 +1,4 @@
 
-	//hide other opened pop-ups then open the latest one
-	$('.popover-mark-close').click(function(){
-    	$('.popover-mark-close').not(this).popover('hide'); //all but this
-	});	
 
 	function initDatePicker(element){
 		$(element).datepicker({
@@ -24,3 +20,23 @@
 		});
 
 	}
+
+	function initSummaryPopOver(date_completed, remarks){
+
+		$('#date-completed-replace').html(date_completed);
+		$('#remarks-replace').html(remarks);
+
+		$('.popover-summary').popover({
+			trigger: 'hover',
+			content: $('#popover-summary-display').html(),
+			title: 'Job Order Summary',
+			html: true,
+			placement: 'left'
+		});
+	}
+
+	$(document).ready(function(){
+		$('.popover-summary').hover(function(){
+			initSummaryPopOver($(this).attr('data-title'), $(this).attr('data-remarks'));	
+		}, function(){});		
+	});

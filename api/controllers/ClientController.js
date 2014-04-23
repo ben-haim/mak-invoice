@@ -21,11 +21,11 @@ module.exports = {
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to ClientController)
-   */
+   */ 
   _config: {},
 
   index: function(req, res, next){
-
+ 
     Client.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
     .sort('id')

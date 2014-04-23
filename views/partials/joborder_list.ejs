@@ -23,7 +23,7 @@
 				<i class="glyphicon glyphicon-ok-circle"></i>
 			</a>
 		<% }else {%>
-			<a href="#" class="popover-mark-close" onClick="initPopOver(<%- joborder.id %>);" data-container="body">
+			<a href="javascript:void(0);" class="popover-summary" data-remarks="<%- joborder.remarks %>" data-title="<%- AppHelper.convertDateToReadable('%B %d, %Y',joborder.date_completed)%>">
 				<i class="glyphicon glyphicon-resize-full"></i>
 			</a>		
 		<% } %>
