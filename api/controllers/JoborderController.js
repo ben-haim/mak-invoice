@@ -43,7 +43,7 @@ module.exports = {
 
   	var view_vars = {
   	  project_id: req.param('project_id'), 
-	  project_code: req.param('project_code'),
+	    project_code: req.param('project_code'),
   	}
   	res.view(view_vars);
   },
@@ -99,7 +99,7 @@ module.exports = {
 
   close: function (req, res, next){
 
-    console.log(req.params.all());
+    // console.log(req.params.all());
 
     var job_update = {
       remarks: req.param("remarks"),

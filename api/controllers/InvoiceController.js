@@ -15,31 +15,6 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-function getClientDetails(project_id){
-
-  var return_value = {};
-
-  Project.findOneById(project_id).done(function(err, project){
-  	if(err){
-  	  return err;
-  	}
-  	if(!project){
-  	  return null;
-  	}else{
-
- 	  Client.findOneById(project.client_id).done( function(err, client){
-	    if(err){
-	      return err;
-	    }
-	    return_value = client;
-	  });
-  	}
-
-  });
-
-  return return_value;
-}
-
 module.exports = {
   
   /**
@@ -53,10 +28,105 @@ module.exports = {
   	//get latest invoice number
   	var args = {
   	  client : getClientDetails(req.param("project_id")),
-  	  date_generated : AppHelper.getCurrentDate('%m-%d-%Y')
+  	  date_generated : AppHelper.getCurrentDate('%m-%d-%Y'),
+      job_orders : getJobOrders(req.param("project_id")),
+      project_id : req.param("project_id")
   	}
-  	res.view(args);
-  }
 
+    // console.log(args);
+  	res.view(args);
+  },
+
+  select: function (req, res, next){
+    Joborder.findById(req.param("joborder_id")).done( function(err, job_orders){
+      if(err){
+        return next(err);
+      }
+      if(!job_orders){
+        return {};
+      }else{
+
+        var job_ids = [];
+        var dom_str = '';
+        var totalamount = 0;
+        for(key in job_orders){
+          job_ids[key] = job_orders[key].id;
+          totalamount = (totalamount + parseFloat(job_orders[key].amount));
+          res.render('partials/invoice_jobs.ejs', {joborder: job_orders[key]}, function(err, html){
+            dom_str = dom_str + html;
+          });          
+        }
+
+        var args = {
+          joborder_id : job_ids,
+          html: dom_str,
+          total_amount: AppHelper.number_format(totalamount, 2, ','),
+          total_amount_raw: totalamount,
+        }
+
+        console.log(args);
+
+        res.json(args); 
+      }
+    });
+  },
+
+  create: function(req, res, next){
+    console.log(req.params.all());
+  }
   
 };
+
+
+
+//------ custom functions 
+
+function getClientDetails(project_id){
+
+  var return_value = {};
+
+  Project.findOneById(project_id).done(function(err, project){
+    if(err){
+      return err;
+    }
+    if(!project){
+      return null;
+    }else{
+
+    Client.findOneById(project.client_id).done( function(err, client){
+      if(err){
+        return err;
+      }
+      return_value = client;
+    });
+    }
+
+  });
+
+  return return_value;
+}
+
+
+function getJobOrders(projectid){
+
+  var return_value = {};
+
+  Joborder.find()
+  .where({ project_id: projectid, status: 2})
+  .sort('id')
+  .exec(function(err, job_orders) {
+    if(err){ 
+      return next(err);
+    }
+
+    if(!job_orders){
+     return null;
+    }else{
+      return_value = job_orders;
+    }
+  });
+  return return_value;
+}
+
+
+

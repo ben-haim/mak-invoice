@@ -1,0 +1,7 @@
+<tr>
+  <td widtd="10"><a href="#"><i class="glyphicon glyphicon-trash"></i></td>			        	
+  <td><%- joborder.ticket_number %></td>
+  <td><%- joborder.title %></td>
+  <td><%- AppHelper.convertDateToReadable('%B %d, %Y', joborder.date_completed) %></td>
+  <td class="text-right"><strong>P <%- AppHelper.number_format(joborder.amount, 2) %></strong></td>
+</tr>

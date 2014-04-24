@@ -29,6 +29,10 @@ module.exports = {
       type: "string"
     },
 
+    footer_note: {
+      type: "string"
+    },
+
     footer_name: {
       type: "string"	
     },
@@ -48,7 +52,6 @@ module.exports = {
     paid_date: {
       type: "integer"	
     }
-
 
   }
 
