@@ -18,13 +18,21 @@ module.exports.policies = {
   // (`true` allows public access) 
   '*': 'flash',
 
-  // ProjectController: {
-  // 	'*': ['flash', 'session']
-  // },
+  ProjectController: {
+  	'*': ['flash', 'session']
+  },
 
   ClientController: {
   	'*': ['flash', 'session']
-  }
+  },
+
+  JoborderController: {
+  	'*': ['flash', 'session']
+  },
+
+  // InvoiceController: {
+  // 	'*': ['flash', 'session']
+  // }
 
   /*
 	// Here's an example of adding some policies to a controller

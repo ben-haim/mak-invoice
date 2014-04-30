@@ -9,27 +9,31 @@ $(document).ready(function(){
 	}, function(){});		
 
 	//load selected Job Orders to invoice via AJAX
-	$('#select-job-orders').click(function(){
+	// $('#select-job-orders').click(function(){
 
-		// window.onbeforeunload = function() {
-		//   return "Changes in the invoice will not be saved!";
-		// }
-	    var btn = $(this)
-	    btn.button('loading');
-	    setTimeout(function(){
-			$.post('/invoice/select', $('#job-selection-form').serialize(), function(response){
-				$('#selected-joborders-container').append(response.html);
-				btn.button('reset');
-				$('#total-amount-holder').html(response.total_amount);
-				$('#total-amount').val(response.total_amount);
-				$('#total-amount-raw').val(response.total_amount_raw);
-				$('#joborder-id').val(response.joborder_id);
-				btn.button('reset');
-				$('.modal').modal('hide');
-				$('#job-selection-form').get(0).reset()
-			});
-		}, 1000);
-	});	
+	// 	// window.onbeforeunload = function() {
+	// 	//   return "Changes in the invoice will not be saved!";
+	// 	// }
+	//     var btn = $(this)
+	//     btn.button('loading');
+	//     setTimeout(function(){
+	// 		$.post('/invoice/select', $('#job-selection-form').serialize(), function(response){
+
+	// 			var total_amount = (response.total_amount_raw + $('#total-amount-raw').val());
+
+	// 			console.log(total_amount);
+
+	// 			$('#selected-joborders-container').append(response.html);
+	// 			btn.button('reset');
+	// 			$('#total-amount-holder').html(total_amount);
+	// 			$('#total-amount').val(response.total_amount);
+	// 			$('#total-amount-raw').val(total_amount);
+	// 			$('#joborder-id').val(response.joborder_id);
+	// 			$('.modal').modal('hide');
+	// 			$('#job-selection-form').get(0).reset()
+	// 		});
+	// 	}, 500);
+	// });	
 
 });
 

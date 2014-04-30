@@ -1,5 +1,5 @@
 <tr>
-	<td><input type="checkbox" name="joborder_id[<%- joborder.id %>]" value="<%- joborder.id %>"></td>
+	<td><input type="checkbox" name="joborder_id[<%- joborder.id %>]" value="<%- joborder.id %>|<%- joborder.amount %>"></td>
 	<td><%- joborder.ticket_number %></td>
 	<td><%- joborder.title %></td>
 	<td><%- AppHelper.convertDateToReadable('%B %d, %Y', joborder.date_requested) %></td>

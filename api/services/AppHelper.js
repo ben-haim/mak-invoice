@@ -25,6 +25,15 @@ module.exports = {
 
   },
 
+  generateInvoiceNumber : function (invoice_id){
+
+    var year = this.getCurrentDate('%Y');
+    var invoice_pad = this.str_pad(invoice_id, 6, '0', 'STR_PAD_LEFT');
+
+    // return this.getCurrentDate('%Y') + '-' + this.str_pad(invoice_id, 6, '0', 'STR_PAD_LEFT');
+    return year + '-' + invoice_pad;
+  },
+
   getCurrentDate : function (format){
     return require('strftime')(format,new Date());
   },
@@ -42,6 +51,58 @@ module.exports = {
 
     return parseInt((time_stamp.getTime() / 1000)) + 86400;
 
+  },
+
+  implode: function (glue, pieces) {
+
+    var i = '',
+      retVal = '',
+      tGlue = '';
+    if (arguments.length === 1) {
+      pieces = glue;
+      glue = '';
+    }
+    if (typeof pieces === 'object') {
+      if (Object.prototype.toString.call(pieces) === '[object Array]') {
+        return pieces.join(glue);
+      }
+      for (i in pieces) {
+        retVal += tGlue + pieces[i];
+        tGlue = glue;
+      }
+      return retVal;
+    }
+    return pieces;
+  },
+
+  explode: function (delimiter, string, limit) {
+    if (arguments.length < 2 || typeof delimiter === 'undefined' || typeof string === 'undefined') return null;
+    if (delimiter === '' || delimiter === false || delimiter === null) return false;
+    if (typeof delimiter === 'function' || typeof delimiter === 'object' || typeof string === 'function' || typeof string ===
+      'object') {
+      return {
+        0: ''
+      };
+    }
+    if (delimiter === true) delimiter = '1';
+    // Here we go...
+    delimiter += '';
+    string += '';
+    var s = string.split(delimiter);
+    if (typeof limit === 'undefined') return s;
+    // Support for limit
+    if (limit === 0) limit = 1;
+    // Positive limit
+    if (limit > 0) {
+      if (limit >= s.length) return s;
+      return s.slice(0, limit - 1)
+        .concat([s.slice(limit - 1)
+          .join(delimiter)
+        ]);
+    }
+    if (-limit >= s.length) return [];
+    s.splice(s.length + limit);
+    return s;
   },
 
   str_pad: function (input, pad_length, pad_string, pad_type) {
@@ -103,8 +164,27 @@ module.exports = {
         .join('0');
     }
     return s.join(dec);
-  }
+  },
 
+  in_array: function (needle, haystack, argStrict) {
+    var key = '',
+      strict = !! argStrict;
 
+    if (strict) {
+      for (key in haystack) {
+        if (haystack[key] === needle) {
+          return true;
+        }
+      }
+    } else {
+      for (key in haystack) {
+        if (haystack[key] == needle) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  },
 
 }

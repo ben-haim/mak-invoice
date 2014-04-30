@@ -61,10 +61,19 @@ module.exports.routes = {
   },
 
   //---- Invoices ---- 
-  '/:project_code/:project_id/invoice/new' : {
+  '/:project_code/:project_id/invoice/create' : {
     controller : "InvoiceController",
-    action : "new"
+    action : "create"
   },  
+  '/:project_code/:project_id/invoice/setup/:invoice_id' : {
+    controller : "InvoiceController",
+    action : "setup"
+  },  
+  '/:project_code/:project_id/invoice/:invoice_id/joborder-remove/:joborder_id' : {
+    controller : "InvoiceController",
+    action : "removejoborder"
+  },  
+
 
   /*
   // But what if you want your home page to display
