@@ -128,16 +128,13 @@ module.exports = {
       invoice_id: req.param("invoice_id"),
       invoice_body: getInvoiceBody(invoice.joborder_id),
       total_amount: invoice.total_amount,
-      selected_joborder: invoice
+      invoice: invoice,
+
     };
 
     console.log(args.job_orders);
 
     res.view(args);
-  },
-
-  save: function (req, res, next){
-    console.log(req.params.all());
   },
 
   removejoborder: function(req, res, next){
@@ -153,10 +150,79 @@ module.exports = {
     console.log(jobrders);
 
     var invoice_update = {
-      
+      joborder_id : AppHelper.implode("|", jobrders),
+      total_amount: parseFloat(invoice.total_amount - req.param("amount"))
     }
+
+    //update invoice
+    Invoice.update({id: req.param("invoice_id")}, invoice_update, function(err, invoice_updated){
+      if(err){
+        return next(err);
+      }
+
+      if(!invoice_updated){
+
+        req.session.flash = {
+          error: {message: 'An Error Occured!, please try again!'}
+        }
+        res.redirect("/" + req.param("project_code") + "/" + req.param("project_id") + "/invoice/setup/" + req.param("invoice_id"));        
+        return;  
+
+      }else{
+
+        req.session.flash = {
+          error: {message: 'Job Order removed, Invoice Updated!'}
+        }        
+        res.redirect("/" + req.param("project_code") + "/" + req.param("project_id") + "/invoice/setup/" + req.param("invoice_id"));        
+      }
+
+    })
     res.json({ret: req.params.all()})
+  },
+
+  save: function (req, res, next){
+    console.log(req.params.all());
+
+    var invoice_id = req.param("invoice_id");
+    var project_code = req.param("project_code");
+
+    delete req.params.all()["invoice_id"];
+    delete req.params.all()["project_code"];
+
+    Invoice.update({id: invoice_id}, req.params.all(), function(err, invoice_updated){
+      if(err){
+        return next(err);
+      }
+
+      if(!invoice_updated){
+
+        req.session.flash = {
+          error: {message: 'An Error Occured!, please try again!'}
+        }
+        res.redirect("/" + project_code + "/" + req.param("project_id") + "/invoice/setup/" + invoice_id);        
+        return;  
+
+      }else{
+
+        req.session.flash = {
+          error: {message: 'Invoice Saved!'}
+        }        
+        res.redirect("/" + project_code + "/" + req.param("project_id") + "/invoice/setup/" + invoice_id);        
+      }
+    });
+
+  },
+
+  generate: function(req, res, next){
+    // console.log(req.params.all());
+
+    var pdf = PdfGenerator.init();
+    
+    res.json({rest: 'test'});
+    // res.view('setup.ejs');
+    // res.download(PdfGenerator.init());
   }
+
   
 };
 

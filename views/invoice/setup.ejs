@@ -64,7 +64,7 @@
 			      	<% for(key in invoice_body){ %>
 			      		<tr>
 			      			<td>
-		      				  <a href="/<%- project_code %>/<%- project_id %>/invoice/<%- invoice_id %>/joborder-remove/<%- invoice_body[key].id %>?amount=<%- invoice_body[key].amount %>" class="glyphicon glyphicon-trash"></a>
+		      				  <a onClick="return confirm('Are you sure you want to remove this JobOrder?');" href="/<%- project_code %>/<%- project_id %>/invoice/<%- invoice_id %>/joborder-remove/<%- invoice_body[key].id %>?amount=<%- invoice_body[key].amount %>" class="glyphicon glyphicon-trash"></a>
 			      			</td>
 
 			      			<td><%- invoice_body[key].ticket_number %></td>
@@ -83,28 +83,28 @@
 		      	      <td class="text-center"><a href="#" data-toggle="modal" clas="btn btn-link" data-target="#modal-joborder-selection"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
 		      	      <th colspan="3" class="text-right">Total:</th>
 		      	      <th class="text-right">P  <span id="total-amount-holder"><%- AppHelper.number_format(total_amount, 2) %></span></th>
-		      	      <input type="hidden" name="total_amount" id="total-amount-raw" value="0">
 		      	      <input type="hidden" name="status" id="status" value="0">
 		      	      <input type="hidden" name="project_id" value="<%- project_id %>">
-		      	      <input type="hidden" name="joborder_id" id="joborder-id">
+		      	      <input type="hidden" name="invoice_id" value="<%- invoice_id %>">
+		      	      <input type="hidden" name="project_code" value="<%- project_code %>">
 		      	    </tr>
 			      </tbody>
 
 				</table>
 				<br><br>
-				<textarea class="invi form-control" name="footer_note" placeholder="Enter footer note or remarks here"></textarea>
+				<textarea class="invi form-control" name="footer_note" placeholder="Enter footer note or remarks here"><%- (invoice && invoice.footer_note) ? invoice.footer_note : null %></textarea>
 				<br>
 				<br>
 				<br>
 				<br>
 				<div class="row">
 					<div class="col-lg-5">
-						<input type="text"  value="<%- (req.session && req.session.userSessionObject)?req.session.userSessionObject.full_name : null %>" name="footer_name" class="invi invi-bold form-control">
+						<input type="text"  value="<%- (invoice && invoice.footer_name) ? invoice.footer_name : null %>" name="footer_name" class="invi invi-bold form-control">
 					</div>	
 				</div>
 				<div class="row">
 					<div class="col-lg-5">
-						<input type="text" name="footer_description" class="invi form-control" value="IT Consultant">
+						<input type="text" name="footer_description" class="invi form-control" value="<%- (invoice && invoice.footer_description) ? invoice.footer_description : 'Designation' %>">
 					</div>	
 				</div>
 
@@ -112,10 +112,13 @@
 			    <div class="well well-sm">
 
 	  			  <button type="submit" class="btn btn-primary" id="save-invoice"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
-			        	
+
+	  			   <a href="/invoice/generate/<%- invoice_id %>" class="btn btn-danger"><i class="glyphicon glyphicon-list-alt"></i> Generate PDF</a> 
+
 			    </div>
 
-		      </form>   
+  			   </form>   
+		       
 		  </div>
 		</div>
 
