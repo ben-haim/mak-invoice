@@ -25,6 +25,28 @@ module.exports = {
 //======================= INDEX =========================== //
   index: function(req, res, next){
 
+    async.waterfall([
+        function(next){
+          Project.find()
+          .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+          .sort('title')
+          .exec(function(err, projects) {
+            if(err){ return next(err);}
+            if(projects){
+              return next(null, projects);
+            }
+          });
+        },
+        function(projects, next){
+          console.log(projects);
+          // arg1 now equals 'one' and arg2 now equals 'two'
+            // next(null, 'three');
+            Joborder.find();
+        }
+    ], function (err, result) {
+       // result now equals 'done'    
+    });
+
     Project.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
     .sort('title')
@@ -35,7 +57,6 @@ module.exports = {
         res.redirect('/session/new');
         return;
       }else{
-        // project_count = (_.size(projects.Data) == 0) ? 
         res.view({project_list: projects});
       }
     });

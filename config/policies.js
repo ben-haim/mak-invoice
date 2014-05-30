@@ -30,9 +30,9 @@ module.exports.policies = {
   	'*': ['flash', 'session']
   },
 
-  // InvoiceController: {
-  // 	'*': ['flash', 'session']
-  // }
+  InvoiceController: {
+  	'*': ['flash', 'session']
+  }
 
   /*
 	// Here's an example of adding some policies to a controller

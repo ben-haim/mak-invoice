@@ -15,11 +15,19 @@
       </h4>
 	  <br>
 
-	  <ul class="list-group">
-	    <li class="list-group-item"><span class="badge">14</span>Job Orders:</li>
-		<li class="list-group-item"><span class="badge">14</span>Generated Invoices:</li>
-	  </ul>				
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Job Orders</h3>
+		  </div>
+		  <div class="panel-body">
+			  <ul class="list-group">
+			    <li class="list-group-item"><span class="badge">14</span>Closed:</li>
+				<li class="list-group-item"><span class="badge">14</span>Open / New:</li>
+			  </ul>			    
+		  </div>
+		</div>
 
+	
 	  <hr>
 	  <p>
 	    <a href="/project/view/<%= project.id %>" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i> View</a>

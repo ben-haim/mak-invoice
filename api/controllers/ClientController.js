@@ -25,7 +25,6 @@ module.exports = {
   _config: {},
 
   index: function(req, res, next){
- 
     Client.find()
     .where({ user_id: req.session.userSessionObject.id, is_active: 1})
     .sort('id')
