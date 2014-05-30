@@ -10,15 +10,10 @@ module.exports = {
   y: 50,
 
   init : function(){
-
     var pdf = new this.PDFKIT();
-
     pdf.pipe (this.fs.createWriteStream( this.pdf_path + 'test.pdf'));
-
     pdf = this.generatePDFHeader(pdf);
-
     this.end(pdf);
-
   },
 
   generatePDFHeader: function(pdf){
@@ -48,6 +43,10 @@ module.exports = {
       .text('Contact No.:', this.x)
       .font("Helvetica", 9)          
       .text('Invoice Date Here!', (this.y + 48), (this.y + 90));
+
+     pdf.lineWidth(25);
+     pdf.rect(100, 100, 100, 100);
+
 
     return pdf;
 

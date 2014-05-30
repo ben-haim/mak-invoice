@@ -60,6 +60,11 @@ module.exports.routes = {
     action : "close"
   },
 
+  '/job-orders/load' : {
+    controller : "JoborderController",
+    action : "load"
+  },
+
   //---- Invoices ---- 
   '/:project_code/:project_id/invoice/create' : {
     controller : "InvoiceController",

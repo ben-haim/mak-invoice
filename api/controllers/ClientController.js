@@ -92,7 +92,7 @@ module.exports = {
       }
 
     });        
-    res.view();
+    // res.view();
   },
 
   view: function(req, res, next){

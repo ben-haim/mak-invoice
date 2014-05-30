@@ -1,0 +1,33 @@
+<tr>
+	<td><%- joborder.ticket_number %></td>
+	<td><%- joborder.title %></td>
+	<td><%- joborder.requested_by %></td>
+	<td><%- AppHelper.convertDateToReadable('%B %d, %Y',joborder.date_requested) %></td>
+	
+	<td>
+
+		<% if (joborder.status == 2 ) {%>
+			<span class="label label-danger"><%- AppHelper.getJobOrderStatusByCode(joborder.status) %></span>
+		<% }else if (joborder.status == 1 ){%>
+			<span class="label label-success"><%- AppHelper.getJobOrderStatusByCode(joborder.status) %></span>		
+		<% }else {%>
+			<span class="label label-info"><%- AppHelper.getJobOrderStatusByCode(joborder.status) %></span>		
+		<% } %>
+		
+	</td>
+
+	<td>
+
+		<% if (joborder.status != 2 ) {%>
+			<a href="#" class="popover-mark-close" onClick="initPopOver(<%- joborder.id %>);" data-container="body">
+				<i class="glyphicon glyphicon-ok-circle"></i>
+			</a>
+		<% }else {%>
+			<a href="javascript:void(0);" class="popover-summary" data-remarks="<%- joborder.remarks %>" data-title="<%- AppHelper.convertDateToReadable('%B %d, %Y',joborder.date_completed)%>">
+				<i class="glyphicon glyphicon-resize-full"></i>
+			</a>		
+		<% } %>
+
+	</td>
+
+</tr>

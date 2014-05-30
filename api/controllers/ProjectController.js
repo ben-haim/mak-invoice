@@ -54,47 +54,47 @@ module.exports = {
       return;
     }
 
-    //Get Project Details
-    Project.findOneById(req.param('id')).done(function(err, project){
-      if(err){return next(err);}
-
-      if(!project){
-        res.redirect('/project');
-        return;
-      }else{
-        project_detail = project;
-        
-      }
-    });
-
-    //Get Client Details
-    Client.findOneById(project_detail.client_id).done(function(err, client){
-      if(err){return next(err);}
-
-      if(!client){
-        res.redirect('/project');
-        return;
-      }else{
-        client_detail = client;
-      }
-    });
-
-    //Get tickets / Job Orders
-    Joborder.findByProject_id(req.param('id')).done(function (err, job_orders){ 
-      if(err){
-        next(err);
-        return;
-      } 
-
-      joborder_list = job_orders;
-
-    });
+    async.waterfall([
+        function(next){
+          Project.findOneById(req.param('id')).done(function(err, project){
+            if(err){return next(err);}
+            next(null, project);
+          });          
+        },
+        function(project, next){
+          Client.findOneById(project.client_id).done(function(err, client){
+            if(err){return next(err);}
+            next(null, project, client);
+          });
+        },
+        function(project, client, next){
+            var return_value = {
+              project_detail: project,
+              client_detail: client
+            }
+            next(null, return_value);
+        }
+    ], function (err, result) {
+       res.view({project_detail: result.project_detail,
+              client_detail: result.client_detail
+              // joborder_list: joborder_list,
+       });       
+    });    
 
 
-    res.view({project_detail: project_detail, 
-              client_detail: client_detail,
-              joborder_list: joborder_list,
-    });
+    // //Get tickets / Job Orders
+    // Joborder.findByProject_id(req.param('id')).done(function (err, job_orders){ 
+    //   if(err){
+    //     next(err);
+    //     return;
+    //   } 
+
+    //   joborder_list = job_orders;
+
+    // });
+
+
+
   },
 //======================= VIEW =========================== //
 
@@ -125,7 +125,6 @@ module.exports = {
       }
     });
 
-    res.view();
   },
 //======================= NEW ============================ //
 
@@ -139,39 +138,37 @@ module.exports = {
       return;
     }
 
-    Project.findOneById(req.param('id')).done(function(err, project){
-      if(err){return next(err);}
 
-      if(!project){
-        res.redirect('/project');
-        return;
-      }else{
-         
+    async.series({
+      project: function(next){
+        Project.findOneById(req.param('id')).done(function(err, project){
+          if(err){
+            return next(err);
+          }
+          next(null, project);
+        });
+      },
+      client: function(next){
         Client.find()
-        .where({ user_id: req.session.userSessionObject.id, is_active: 1})
-        .sort('name')
-        .exec(function(err, clients) {
-          if(err){ return next(err);}
-
-          if(!clients){
-            res.redirect('/session/new');
-            return;
-          }else{
-
+          .where({ user_id: req.session.userSessionObject.id, is_active: 1})
+          .sort("name")
+          .exec(function(err, clients){
             var client_list = []
             for(prop in clients){
               client_list[clients[prop].id] = clients[prop].name;
             }
-
-            client_dropdown = AppHelper.htmlOptions(client_list, project.client_id);
-          }
-        });     
-        
-        res.view({project_detail: project, client_select: client_dropdown});
+            next(null, client_list);
+          })
       }
-
-    });        
-    res.view();
+    },
+    function(err, async_response) {
+      console.log(async_response);
+      var args = {
+        project_detail: async_response.project,
+        client_select: AppHelper.htmlOptions(async_response.client, async_response.project.client_id)
+      }
+      res.view(args);
+    });
   },
 //======================= EDIT =========================== //
 

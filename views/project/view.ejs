@@ -1,6 +1,6 @@
 
 <div class="row">
-	<div class="col-lg-3">
+	<div class="col-lg-6">
 		<div class="panel panel-default">
 		  <div class="panel-heading"><i class="glyphicon glyphicon-book"></i> Project Details</div>
 		  <div class="panel-body">
@@ -14,7 +14,8 @@
           	<%-project_detail.description%>
 		  </div>
 		</div>
-
+	</div>
+	<div class="col-lg-6">	
 		<div class="panel panel-default">
 		  <div class="panel-heading"><i class="glyphicon glyphicon-user"></i> Client Details</div>
 		  <div class="panel-body">
@@ -31,11 +32,12 @@
           	<%-client_detail.address%>
 		  </div>
 		</div>	
-
-
 	</div>
 
-	<div class="col-lg-9">
+</div><!-- .row -->
+
+<div class="row">
+	<div class="col-lg-12">
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -58,11 +60,14 @@
 					        </tr>
 					      </thead>
 
-					      <tbody>
-
-					      	<% for(key in joborder_list){ %>
-								<%- partial('../partials/joborder_list.ejs', {joborder: joborder_list[key]})%>			      	
-					      	<% } %>
+					      <tbody id="joborder-list-container">
+					      	<tr>
+					      	  <td colspan="6" class="text-center"><img src="/linker/images/ajax-loader.gif"></td>
+					      	</tr>
+					      	
+					      	<% /*for(key in joborder_list){ %>
+								<% - partial('../partials/joborder_list.ejs', {joborder: joborder_list[key]})%>			      	
+					      	<% } */%>
 
 					      </tbody>
 						</table>
@@ -109,11 +114,20 @@
 					<em>**Invoice marked as closed are considered paid.</em>
 				  </div>
 				</div><!-- .panel-default -->
-							
+
 			</div>
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function(){
+		$.post('/job-orders/load', {project_id: <%- project_detail.id %>}, function(data){
+		  setTimeout(function(){
+		    $("#joborder-list-container").html(data.response);
+		  }, 500);
+		});
+	});
+</script>
 
 <% // ------- INCLUDE  Partial TEMPLATES ------- // %>
 <%- partial('../partials/popovers/mark_as_close.ejs', { project_id:  project_detail.id})%>

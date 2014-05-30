@@ -23,6 +23,12 @@ module.exports = {
    */
   _config: {},
 
+  test: function(req, res, next){
+    var pdf = require("pdfmake");
+    console.log(pdfmake);
+    res.json({"test" : "test"});
+  },
+
   create: function (req, res, next){
 
   	var args = {
@@ -207,7 +213,7 @@ module.exports = {
         req.session.flash = {
           error: {message: 'Invoice Saved!'}
         }        
-        res.redirect("/" + project_code + "/" + req.param("project_id") + "/invoice/setup/" + invoice_id);        
+        res.redirect("/" + project_code + "/" + req.param("project_id") + "/invoice/setup/" + invoice_id);
       }
     });
 

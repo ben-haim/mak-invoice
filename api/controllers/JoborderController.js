@@ -116,9 +116,9 @@ module.exports = {
       if(!job_updated){
         req.session.flash = {
           error: {message: 'An Error Occured!, please try again!'}
-        }        
+        }
         res.redirect('/project/view/' + req.param("project_id"));
-        return;        
+        return;
       }else{
         req.session.flash = {
           success: {message: 'JobOrder Marked as closed!'}
@@ -129,9 +129,23 @@ module.exports = {
     });
 
 
+  },
+
+  load: function(req, res, next){
+    //Get tickets / Job Orders
+    Joborder.findByProject_id(req.param('project_id')).done(function (err, job_orders){ 
+      if(err){
+        return next(err);
+      }
+      var return_value = '';
+      for(key in job_orders){
+        res.render("partials/joborder_list.ejs", {joborder: job_orders[key]}, function(err, html){
+          return_value += html;
+        });
+      }
+      res.json({response: return_value});
+    });
+
   }
-
-
-
   
 };

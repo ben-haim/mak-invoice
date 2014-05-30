@@ -16,7 +16,7 @@ module.exports.adapters = {
 
   // If you leave the adapter config unspecified 
   // in a model definition, 'default' will be used.
-  'default': 'disk',
+  'default': 'mysql-adapter',
 
   // Persistent adapter for DEVELOPMENT ONLY
   // (data is preserved when the server shuts down)
@@ -35,5 +35,13 @@ module.exports.adapters = {
     // so you don't inadvertently push it up if you're using version control
     password: 'YOUR_MYSQL_PASSWORD', 
     database: 'YOUR_MYSQL_DB'
-  }
+  },
+
+  'mysql-adapter': {
+    module: 'sails-mysql',
+    host: 'localhost',
+    user: 'makinvoice',
+    password: 'makinvoice',
+    database: 'makinvoice_db'
+  }  
 };
