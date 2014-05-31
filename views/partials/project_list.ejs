@@ -21,8 +21,14 @@
 		  </div>
 		  <div class="panel-body">
 			  <ul class="list-group">
-			    <li class="list-group-item"><span class="badge">14</span>Closed:</li>
-				<li class="list-group-item"><span class="badge">14</span>Open / New:</li>
+			    <li class="list-group-item">
+			      <span class="badge"><%- project.jo_summary.closed %></span>
+			      <a href="/<%- project.project_code %>/<%- project.id %>/job-orders/view?filter=closed">Closed:</a>
+			    </li>
+			    <li class="list-group-item">
+			      <span class="badge"><%- project.jo_summary.open %></span>
+			      <a href="/<%- project.project_code %>/<%- project.id %>/job-orders/view?filter=open">Open / New:</a>
+			    </li>
 			  </ul>			    
 		  </div>
 		</div>

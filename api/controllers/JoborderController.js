@@ -36,6 +36,11 @@ module.exports = {
   }, 
 
   view : function (req, res, next) {
+    console.log(req.query);
+    if(req.query.filter){
+      console.log(sails.config.statuscodes.joborder);
+      console.log(_.toArray(sails.config.statuscodes.joborder).indexOf(req.query.filter));
+    }
   	res.view();
   },
 

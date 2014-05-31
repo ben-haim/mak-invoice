@@ -38,27 +38,29 @@ module.exports = {
           });
         },
         function(projects, next){
-          console.log(projects);
-          // arg1 now equals 'one' and arg2 now equals 'two'
-            // next(null, 'three');
-            Joborder.find();
+          var project_ids = _.union([0], _.pluck(projects, "id"));
+            Joborder.find()
+              .where({project_id: project_ids})
+              .exec(function(err, job_orders){
+                if(err){return next(err);}
+                if(job_orders){
+                  return next(null, job_orders, projects);
+                }
+              });
         }
-    ], function (err, result) {
-       // result now equals 'done'    
-    });
+    ], function (err, job_orders, projects) {
 
-    Project.find()
-    .where({ user_id: req.session.userSessionObject.id, is_active: 1})
-    .sort('title')
-    .exec(function(err, projects) {
-      if(err){ return next(err);}
+       for(key in projects){
 
-      if(!projects){
-        res.redirect('/session/new');
-        return;
-      }else{
-        res.view({project_list: projects});
-      }
+         var jo_total =_.where(job_orders, {project_id: projects[key].id});
+         var jo_summary ={
+          total: jo_total.length,
+          closed: _.where(jo_total, {status: 2}).length,
+          open:  _.where(jo_total, {status: 0}).length
+         }
+         projects[key].jo_summary = jo_summary;
+       }
+       res.view({project_list: projects});       
     });
   },
 //======================= INDEX =========================== //  

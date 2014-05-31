@@ -55,6 +55,11 @@ module.exports.routes = {
     action : "create"
   },    
 
+  '/:project_code/:project_id/job-orders/view' : {
+    controller : "JoborderController",
+    action : "view"
+  },    
+
   '/job-orders/close' : {
     controller : "JoborderController",
     action : "close"
