@@ -25,7 +25,6 @@ function genereateTicketNumber(project_code, id){
 
 }
 
-
 module.exports = {
     
   _config: {},
@@ -36,12 +35,21 @@ module.exports = {
   }, 
 
   view : function (req, res, next) {
-    console.log(req.query);
     if(req.query.filter){
-      console.log(sails.config.statuscodes.joborder);
-      console.log(_.toArray(sails.config.statuscodes.joborder).indexOf(req.query.filter));
+      status_filter = _.toArray(sails.config.statuscodes.joborder).indexOf(req.query.filter);
     }
-  	res.view();
+
+    Joborder.find()
+      .where({status: status_filter, project_id: req.param("project_id")})
+      .sort("date_requested DESC")
+      .exec(function(err, joborders){
+        if(err){
+          return next(err);
+        }
+        console.log({joborder_list: joborders});
+        res.view({joborder_list: joborders});    
+      });
+  	
   },
 
   new : function (req, res, next) {
